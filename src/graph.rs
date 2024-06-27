@@ -1,6 +1,6 @@
-use crate::linked_list::{LinkedList, LinkedListIterator};
+use std::vec;
 
-type NodesT<'a> = LinkedList<&'a Node<'a>>;
+type NodesT<'a> = Vec<&'a Node<'a>>;
 
 /**
  * Node<'a>
@@ -8,7 +8,7 @@ type NodesT<'a> = LinkedList<&'a Node<'a>>;
  */
 pub struct Node<'a> {
     pub val: i32,
-    adj: NodesT<'a>,
+    pub adj: NodesT<'a>,
 }
 
 impl PartialEq for Node<'_> {
@@ -25,22 +25,15 @@ impl std::fmt::Display for Node<'_> {
 
 impl Node<'_> {
     pub fn new(val: i32) -> Self {
-        Node {
-            val,
-            adj: LinkedList::new(),
-        }
+        Node { val, adj: vec![] }
     }
 }
 
 impl<'a> Node<'a> {
     pub fn add_adj(&mut self, node: &'a Node<'a>) {
-        if self.adj.find(node) {
+        if self.adj.iter().find(|x| ***x == *node).is_some() {
             return;
         }
         self.adj.push(node);
-    }
-
-    pub fn iter(&'a self) -> LinkedListIterator<'a, &'a Node<'a>> {
-        self.adj.iter()
     }
 }

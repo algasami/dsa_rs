@@ -42,7 +42,7 @@ mod tests {
 
         n1.add_adj(&*n2);
         println!("{}'s adjs", n1);
-        for x in n1.iter() {
+        for x in n1.adj {
             println!("{}", x);
         }
     }
