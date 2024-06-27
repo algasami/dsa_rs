@@ -1,39 +1,50 @@
 use std::vec;
 
-type NodesT<'a> = Vec<&'a Node<'a>>;
+type NodesT<'a, T> = Vec<&'a Node<'a, T>>;
 
 /**
  * Node<'a>
  * 'a means that the adj references to node refs that live at least as long as 'a
  */
-pub struct Node<'a> {
-    pub val: i32,
-    pub adj: NodesT<'a>,
+pub struct Node<'a, T> {
+    pub key: i32,
+    pub val: T,
+    pub adj: NodesT<'a, T>,
 }
 
-impl PartialEq for Node<'_> {
+impl<T> PartialEq for Node<'_, T> {
     fn eq(&self, other: &Self) -> bool {
-        self.val == other.val
+        self.key == other.key
     }
 }
 
-impl std::fmt::Display for Node<'_> {
+impl<T> std::fmt::Display for Node<'_, T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "node {}", self.val)
+        write!(f, "node {}", self.key)
     }
 }
 
-impl Node<'_> {
-    pub fn new(val: i32) -> Self {
-        Node { val, adj: vec![] }
+impl<T> Node<'_, T> {
+    pub fn new(key: i32, val: T) -> Self {
+        Node {
+            key,
+            val,
+            adj: vec![],
+        }
     }
 }
 
-impl<'a> Node<'a> {
-    pub fn add_adj(&mut self, node: &'a Node<'a>) {
+impl<'a, T> Node<'a, T> {
+    pub fn add_adj(&mut self, node: &'a Node<'a, T>) {
         if self.adj.iter().find(|x| ***x == *node).is_some() {
             return;
         }
         self.adj.push(node);
+    }
+
+    pub fn remove_adj(&mut self, node: &'a Node<'a, T>) {
+        if let Some(index) = self.adj.iter().position(|x| **x == *node) {
+            self.adj.remove(index);
+        }
     }
 }

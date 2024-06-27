@@ -12,10 +12,6 @@ mod tests {
         ll.push(2);
         ll.push(3);
 
-        for x in ll.iter() {
-            println!("{}", x);
-        }
-
         assert_eq!(ll.print(), 3);
     }
 
@@ -29,21 +25,17 @@ mod tests {
 
         let ll2 = ll.split(2).expect("ll2 should not be None!");
 
-        println!("ll:");
         assert_eq!(ll.print(), 2);
-        println!("ll2:");
         assert_eq!(ll2.print(), 2);
     }
 
     #[test]
     fn nodes() {
-        let n2 = Box::new(Node::new(2));
-        let mut n1 = Box::new(Node::new(1));
+        let n2 = Box::new(Node::new(2, 2));
+        let mut n1 = Box::new(Node::new(1, 1));
 
         n1.add_adj(&*n2);
-        println!("{}'s adjs", n1);
-        for x in n1.adj {
-            println!("{}", x);
-        }
+        n1.remove_adj(&*n2);
+        assert_eq!(n1.adj.len(), 0);
     }
 }
