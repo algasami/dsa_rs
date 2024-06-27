@@ -1,10 +1,10 @@
-pub mod binary_tree;
+pub mod binary_search_tree;
 pub mod graph;
 pub mod linked_list;
 
 #[cfg(test)]
 mod tests {
-    use crate::{binary_tree::BSTNode, graph::Node, linked_list::LinkedList};
+    use crate::{binary_search_tree::BSTNode, graph::Node, linked_list::LinkedList};
 
     #[test]
     fn push_test() {
