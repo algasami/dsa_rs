@@ -75,7 +75,7 @@ impl<T: Clone> BST<T> {
     pub fn remove(&mut self, key: i32) {
         if let Some(root) = &mut self.node {
             match root.key.cmp(&key) {
-                Ordering::Equal => match (root.left.node.as_mut(), root.right.node.as_mut()) {
+                Ordering::Equal => match (root.left.node.as_ref(), root.right.node.as_ref()) {
                     (None, None) => {
                         self.node.take();
                     }
