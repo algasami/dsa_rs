@@ -1,17 +1,17 @@
-pub struct BTNode<'a, T> {
-    pub left: Option<&'a mut BTNode<'a, T>>,
-    pub right: Option<&'a mut BTNode<'a, T>>,
+pub struct BSTNode<'a, T> {
+    pub left: Option<&'a mut BSTNode<'a, T>>,
+    pub right: Option<&'a mut BSTNode<'a, T>>,
     pub key: i32,
     pub val: T,
 }
 
-impl<T> PartialEq for BTNode<'_, T> {
+impl<T> PartialEq for BSTNode<'_, T> {
     fn eq(&self, other: &Self) -> bool {
         self.key == other.key
     }
 }
 
-impl<T> BTNode<'_, T> {
+impl<T> BSTNode<'_, T> {
     pub fn new(key: i32, val: T) -> Self {
         Self {
             left: None,
@@ -22,8 +22,8 @@ impl<T> BTNode<'_, T> {
     }
 }
 
-impl<'a, T> BTNode<'a, T> {
-    pub fn insert(&mut self, node_ref: &'a mut BTNode<'a, T>) {
+impl<'a, T> BSTNode<'a, T> {
+    pub fn insert(&mut self, node_ref: &'a mut BSTNode<'a, T>) {
         assert_ne!(
             self.key, node_ref.key,
             "Binary Tree nodes should have unique ids/keys!"
@@ -41,7 +41,7 @@ impl<'a, T> BTNode<'a, T> {
             self.right = Some(node_ref);
         }
     }
-    pub fn remove(&mut self, node_ref: &'a BTNode<'a, T>) {
+    pub fn remove(&mut self, node_ref: &'a BSTNode<'a, T>) {
         unimplemented!();
     }
 }
