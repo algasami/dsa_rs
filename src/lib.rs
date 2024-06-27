@@ -47,5 +47,6 @@ mod tests {
         tree.insert(3, 3);
         tree.remove(2);
         println!("{}", tree);
+        tree.print_bfs();
     }
 }

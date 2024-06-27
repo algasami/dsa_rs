@@ -1,5 +1,5 @@
 use core::fmt;
-use std::cmp::Ordering;
+use std::{cmp::Ordering, collections::VecDeque};
 
 struct BSTNode<T> {
     left: BST<T>,
@@ -56,6 +56,21 @@ impl<T> BST<T> {
             }
         } else {
             self.node = Some(Box::new(BSTNode::new(key, val)));
+        }
+    }
+
+    pub fn print_bfs(&self) {
+        let mut queue: VecDeque<&BST<T>> = VecDeque::new();
+        queue.push_back(&self);
+        while let Some(front_bst) = queue.pop_front() {
+            let Some(front_node) = &front_bst.node else {
+                continue;
+            };
+
+            println!("{}", front_node.key);
+
+            queue.push_back(&front_node.left);
+            queue.push_back(&front_node.right);
         }
     }
 }
