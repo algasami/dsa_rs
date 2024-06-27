@@ -45,7 +45,6 @@ mod tests {
         let mut tree: BST<i32> = BST::new(2, 2);
         tree.insert(1, 2);
         tree.insert(3, 3);
-        tree.remove(2);
         println!("{}", tree);
     }
 }

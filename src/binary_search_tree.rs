@@ -106,12 +106,13 @@ impl<T: Clone> BST<T> {
 
 impl<T: fmt::Display> BST<T> {
     fn fmt_helper(&self, f: &mut fmt::Formatter<'_>, depth: usize) -> fmt::Result {
-        write!(f, "{}", ("\t").repeat(depth))?;
         if let Some(current_node) = &self.node {
-            writeln!(f, "node {}", current_node.key)?;
             current_node.left.fmt_helper(f, depth + 1)?;
+            write!(f, "{}", ("\t").repeat(depth))?;
+            writeln!(f, "node {}", current_node.key)?;
             current_node.right.fmt_helper(f, depth + 1)?;
         } else {
+            write!(f, "{}", ("\t").repeat(depth))?;
             return writeln!(f, "leave");
         }
         Ok(())
