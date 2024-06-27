@@ -77,12 +77,11 @@ impl<T> BST<T> {
 
 impl<T: Clone> BST<T> {
     fn extract_min(&mut self) -> Option<Box<BSTNode<T>>> {
-        if !self.is_empty() {
-            if self.node.as_ref().unwrap().left.is_empty() == false {
-                return self.node.as_mut().unwrap().left.extract_min();
-            } else {
-                return self.node.take();
+        if let Some(root) = &mut self.node {
+            if !root.left.is_empty() {
+                return root.left.extract_min();
             }
+            return self.node.take();
         }
         return None;
     }
