@@ -1,9 +1,10 @@
+pub mod binary_tree;
 pub mod graph;
 pub mod linked_list;
 
 #[cfg(test)]
 mod tests {
-    use crate::{graph::Node, linked_list::LinkedList};
+    use crate::{binary_tree::BTNode, graph::Node, linked_list::LinkedList};
 
     #[test]
     fn push_test() {
@@ -37,5 +38,16 @@ mod tests {
         n1.add_adj(&*n2);
         n1.remove_adj(&*n2);
         assert_eq!(n1.adj.len(), 0);
+    }
+
+    #[test]
+    fn bin_tree() {
+        let mut n1 = BTNode::new(1, 3);
+        let mut n2 = Box::new(BTNode::new(2, 4));
+        let mut n3 = BTNode::new(0, 0);
+        n1.insert(&mut n2); // Box has auto deref (*x) to act as if it is on the stack
+        n1.insert(&mut n3);
+        println!("{}", n1.left.is_some());
+        println!("{}", n1.right.is_some());
     }
 }
