@@ -86,8 +86,7 @@ impl<T: Clone> BST<T> {
                         self.node = root.right.node.take();
                     }
                     (Some(_), Some(_)) => {
-                        let tmp = root.right.extract_min();
-                        if let Some(x) = tmp {
+                        if let Some(x) = root.right.extract_min() {
                             root.key = x.key;
                             root.val = x.val.clone();
                         }
