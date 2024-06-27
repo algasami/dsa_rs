@@ -2,32 +2,39 @@ use crate::linked_list::{LinkedList, LinkedListIterator};
 
 type NodesT<'a> = LinkedList<&'a Node<'a>>;
 
+/**
+ * Node<'a>
+ * 'a means that the adj references to node refs that live at least as long as 'a
+ */
 pub struct Node<'a> {
     pub val: i32,
     adj: NodesT<'a>,
 }
 
-impl<'a> PartialEq for Node<'a> {
+impl PartialEq for Node<'_> {
     fn eq(&self, other: &Self) -> bool {
         self.val == other.val
     }
 }
 
-impl<'a> std::fmt::Display for Node<'a> {
+impl std::fmt::Display for Node<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "node {}", self.val)
     }
 }
 
-impl<'a> Node<'a> {
+impl Node<'_> {
     pub fn new(val: i32) -> Self {
         Node {
             val,
             adj: LinkedList::new(),
         }
     }
+}
+
+impl<'a> Node<'a> {
     pub fn add_adj(&mut self, node: &'a Node<'a>) {
-        if self.adj.find(&self) {
+        if self.adj.find(node) {
             return;
         }
         self.adj.push(node);

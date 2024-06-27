@@ -39,7 +39,11 @@ mod tests {
     fn nodes() {
         let n2 = Box::new(Node::new(2));
         let mut n1 = Box::new(Node::new(1));
+
         n1.add_adj(&*n2);
-        println!("{}", n1.val);
+        println!("{}'s adjs", n1);
+        for x in n1.iter() {
+            println!("{}", x);
+        }
     }
 }
