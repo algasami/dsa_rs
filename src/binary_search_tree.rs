@@ -61,12 +61,12 @@ impl<T> BST<T> {
 }
 
 impl<T: Clone> BST<T> {
-    fn extract_min(&self) -> Option<(i32, T)> {
-        if let Some(root) = &self.node {
-            if root.left.is_empty() == false {
-                return root.left.extract_min();
+    fn extract_min(&mut self) -> Option<Box<BSTNode<T>>> {
+        if !self.is_empty() {
+            if self.node.as_ref().unwrap().left.is_empty() == false {
+                return self.node.as_mut().unwrap().left.extract_min();
             } else {
-                return Some((root.key, root.val.clone()));
+                return self.node.take();
             }
         }
         return None;
@@ -86,10 +86,10 @@ impl<T: Clone> BST<T> {
                         self.node = root.right.node.take();
                     }
                     (Some(_), Some(_)) => {
-                        if let Some((key, val)) = root.right.extract_min() {
-                            root.val = val;
-                            root.key = key;
-                            root.right.remove(key);
+                        let tmp = root.right.extract_min();
+                        if let Some(x) = tmp {
+                            root.key = x.key;
+                            root.val = x.val.clone();
                         }
                     }
                 },
