@@ -1,50 +1,81 @@
-use std::vec;
+use core::fmt;
+use std::collections::{HashMap, HashSet};
 
-type NodesT<'a, T> = Vec<&'a Node<'a, T>>;
-
-/**
- * Node<'a>
- * 'a means that the adj references to node refs that live at least as long as 'a
- */
-pub struct Node<'a, T> {
-    pub key: i32,
-    pub val: T,
-    pub adj: NodesT<'a, T>,
+pub type NodeT = usize;
+pub struct Graph<T> {
+    nodes: HashMap<NodeT, Box<GraphNode<T>>>,
+    current_id: NodeT,
 }
 
-impl<T> PartialEq for Node<'_, T> {
-    fn eq(&self, other: &Self) -> bool {
-        self.key == other.key
-    }
+struct GraphNode<T> {
+    key: NodeT,
+    val: T,
+    edges: HashSet<NodeT>,
 }
 
-impl<T> std::fmt::Display for Node<'_, T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "node {}", self.key)
-    }
-}
-
-impl<T> Node<'_, T> {
-    pub fn new(key: i32, val: T) -> Self {
-        Node {
-            key,
-            val,
-            adj: vec![],
+impl<T> Graph<T> {
+    pub fn new() -> Self {
+        Graph {
+            nodes: HashMap::new(),
+            current_id: 0,
         }
     }
-}
 
-impl<'a, T> Node<'a, T> {
-    pub fn add_adj(&mut self, node: &'a Node<'a, T>) {
-        if self.adj.iter().find(|x| ***x == *node).is_some() {
-            return;
-        }
-        self.adj.push(node);
+    pub fn add_node(&mut self, val: T) -> NodeT {
+        let node_id = self.current_id;
+        self.nodes.insert(
+            node_id,
+            Box::new(GraphNode {
+                key: node_id,
+                val,
+                edges: HashSet::new(),
+            }),
+        );
+        self.current_id += 1;
+        node_id
     }
 
-    pub fn remove_adj(&mut self, node: &'a Node<'a, T>) {
-        if let Some(index) = self.adj.iter().position(|x| **x == *node) {
-            self.adj.remove(index);
+    pub fn is_dangling(&self, key: NodeT) -> bool {
+        !self.nodes.contains_key(&key)
+    }
+
+    pub fn add_edge(&mut self, key1: NodeT, key2: NodeT) -> Result<(), ()> {
+        if self.is_dangling(key1) || self.is_dangling(key2) {
+            return Err(());
         }
+        let Some(node1) = self.nodes.get_mut(&key1) else {
+            return Err(());
+        };
+        node1.edges.insert(key2);
+        let Some(node2) = self.nodes.get_mut(&key2) else {
+            return Err(());
+        };
+        node2.edges.insert(key1);
+        Ok(())
+    }
+
+    pub fn remove_edge(&mut self, key1: NodeT, key2: NodeT) -> Result<(), ()> {
+        let Some(node1) = self.nodes.get_mut(&key1) else {
+            return Err(());
+        };
+        node1.edges.remove(&key2);
+        let Some(node2) = self.nodes.get_mut(&key2) else {
+            return Err(());
+        };
+        node2.edges.remove(&key1);
+        Ok(())
+    }
+}
+
+impl<T: fmt::Display> fmt::Display for Graph<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        for (key, node) in &self.nodes {
+            writeln!(f, "Node {} - Val {}", key, &node.val)?;
+            writeln!(f, "--------")?;
+            for to_node in &node.edges {
+                writeln!(f, "{}", to_node)?;
+            }
+        }
+        Ok(())
     }
 }

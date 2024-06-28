@@ -4,7 +4,7 @@ pub mod linked_list;
 
 #[cfg(test)]
 mod tests {
-    use crate::{binary_search_tree::BST, linked_list::LinkedList};
+    use crate::{binary_search_tree::BST, graph, linked_list::LinkedList};
 
     #[test]
     fn push_test() {
@@ -31,7 +31,25 @@ mod tests {
     }
 
     #[test]
-    fn nodes() {}
+    fn nodes() {
+        let mut g: graph::Graph<graph::NodeT> = graph::Graph::new();
+        let nodes: graph::NodeT = 5;
+        let mut ids: Vec<graph::NodeT> = vec![];
+        for x in 0..nodes {
+            ids.push(g.add_node(x * 2));
+        }
+        for i in 0..ids.len() {
+            for j in i + 1..ids.len() {
+                match g.add_edge(ids[i], ids[j]) {
+                    Err(_) => {
+                        panic!("Graph::add_edge has failed!");
+                    }
+                    Ok(_) => {}
+                }
+            }
+        }
+        println!("{}", g);
+    }
 
     #[test]
     fn bin_tree_delete() {
