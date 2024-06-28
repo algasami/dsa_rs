@@ -3,13 +3,13 @@ use std::collections::{HashMap, HashSet};
 
 pub type NodeT = usize;
 pub struct Graph<T> {
-    nodes: HashMap<NodeT, Box<GraphNode<T>>>,
+    pub nodes: HashMap<NodeT, Box<GraphNode<T>>>,
     current_id: NodeT,
 }
 
-struct GraphNode<T> {
-    val: T,
-    edges: HashSet<NodeT>,
+pub struct GraphNode<T> {
+    pub val: T,
+    pub edges: HashSet<NodeT>,
 }
 
 impl<T> Graph<T> {
