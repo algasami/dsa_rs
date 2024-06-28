@@ -8,7 +8,6 @@ pub struct Graph<T> {
 }
 
 struct GraphNode<T> {
-    key: NodeT,
     val: T,
     edges: HashSet<NodeT>,
 }
