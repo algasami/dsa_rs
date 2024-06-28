@@ -25,7 +25,6 @@ impl<T> Graph<T> {
         self.nodes.insert(
             node_id,
             Box::new(GraphNode {
-                key: node_id,
                 val,
                 edges: HashSet::new(),
             }),
