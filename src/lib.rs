@@ -39,7 +39,6 @@ mod tests {
         tree.insert(1, 2);
         tree.insert(3, 3);
         tree.remove(2);
-        println!("{}", tree);
-        tree.print_bfs();
+        assert!(tree.find_ref(2).is_none(), "2 should have been deleted!");
     }
 }

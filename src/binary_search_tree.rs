@@ -59,6 +59,28 @@ impl<T> BST<T> {
         }
     }
 
+    pub fn find_mut(&mut self, key: i32) -> Option<&mut T> {
+        let Some(root) = &mut self.node else {
+            return None;
+        };
+        match root.key.cmp(&key) {
+            Ordering::Equal => Some(&mut root.val),
+            Ordering::Greater => root.left.find_mut(key),
+            Ordering::Less => root.right.find_mut(key),
+        }
+    }
+
+    pub fn find_ref(&self, key: i32) -> Option<&T> {
+        let Some(root) = &self.node else {
+            return None;
+        };
+        match root.key.cmp(&key) {
+            Ordering::Equal => Some(&root.val),
+            Ordering::Greater => root.left.find_ref(key),
+            Ordering::Less => root.right.find_ref(key),
+        }
+    }
+
     pub fn print_bfs(&self) {
         let mut queue: VecDeque<&BST<T>> = VecDeque::new();
         queue.push_back(&self);
