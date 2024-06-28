@@ -71,7 +71,7 @@ impl<T: std::cmp::PartialEq> LinkedList<T> {
         }
         None
     }
-    pub fn remove(&mut self, val: T) {
+    pub fn remove(&mut self, _val: T) {
         /*
         Linked List is difficult to implement in Rust due to its unsafe nature.
         */
