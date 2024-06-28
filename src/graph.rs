@@ -35,12 +35,12 @@ impl<T> Graph<T> {
         node_id
     }
 
-    pub fn is_dangling(&self, key: NodeT) -> bool {
-        !self.nodes.contains_key(&key)
+    pub fn is_dangling(&self, key: &NodeT) -> bool {
+        !self.nodes.contains_key(key)
     }
 
     pub fn add_edge(&mut self, key1: NodeT, key2: NodeT) -> Result<(), ()> {
-        if self.is_dangling(key1) || self.is_dangling(key2) {
+        if self.is_dangling(&key1) || self.is_dangling(&key2) {
             return Err(());
         }
         let Some(node1) = self.nodes.get_mut(&key1) else {
@@ -54,16 +54,25 @@ impl<T> Graph<T> {
         Ok(())
     }
 
-    pub fn remove_edge(&mut self, key1: NodeT, key2: NodeT) -> Result<(), ()> {
-        let Some(node1) = self.nodes.get_mut(&key1) else {
-            return Err(());
+    pub fn remove_edge(&mut self, key1: &NodeT, key2: &NodeT) {
+        if let Some(node1) = self.nodes.get_mut(&key1) {
+            node1.edges.remove(&key2);
         };
-        node1.edges.remove(&key2);
-        let Some(node2) = self.nodes.get_mut(&key2) else {
-            return Err(());
+        if let Some(node2) = self.nodes.get_mut(&key1) {
+            node2.edges.remove(&key1);
         };
-        node2.edges.remove(&key1);
-        Ok(())
+    }
+
+    pub fn remove_node(&mut self, key: &NodeT) {
+        let Some(node1) = self.nodes.remove(key) else {
+            return;
+        };
+        for key2 in node1.edges {
+            let Some(node2) = self.nodes.get_mut(&key2) else {
+                continue;
+            };
+            node2.edges.remove(key);
+        }
     }
 }
 

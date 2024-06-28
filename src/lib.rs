@@ -48,6 +48,7 @@ mod tests {
                 }
             }
         }
+        g.remove_node(&0);
         println!("{}", g);
     }
 
