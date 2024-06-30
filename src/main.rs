@@ -7,6 +7,10 @@ use dsa_rs::graph::{Graph, NodeT};
 use text_io::read;
 
 fn main() {
+    tarjan_main();
+}
+
+fn tarjan_main() {
     let mut g: Graph<i32> = Graph::new();
 
     println!("Input <nodes> <edges> on the next line");
